@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetflixRareBackend.Data;
 using NetflixRareBackend.Models;
 
 namespace NetflixRareBackend
@@ -18,6 +19,13 @@ namespace NetflixRareBackend
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Reaction>().HasData(ReactionData.Reactions);
+            modelBuilder.Entity<Category>().HasData(CategoryData.Categories);
+            modelBuilder.Entity<Comment>().HasData(CommentData.Comments);
+            modelBuilder.Entity<Subscription>().HasData(SubscriptionData.Subscriptions);
+            modelBuilder.Entity<Tag>().HasData(TagData.Tags);
+            modelBuilder.Entity<User>().HasData(UserData.Users);
+            modelBuilder.Entity<Post>().HasData(PostData.Posts);
         }
 
     }
