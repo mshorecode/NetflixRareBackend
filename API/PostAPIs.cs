@@ -21,6 +21,36 @@
                 }
             });
 
+            app.MapGet("/api/posts/{userId}/subscribed", (RareDbContext db, int userId) => {
+
+                try
+                {
+                    var userSubs = db.Subscriptions.Where(sub => sub.Follower_Id == userId);
+                    var userSubsPosts = from subs in userSubs
+                                        join post in db.Posts on subs.Author_Id equals post.User_Id
+                                        select post;
+                    return Results.Ok(userSubsPosts);
+                }
+                catch
+                {
+                    return Results.NotFound();
+                }
+            });
+
+
+            app.MapGet("/api/posts/{postId}", (RareDbContext db, int postId) =>
+            {
+                try
+                {
+                    var userPostToDelete = db.Posts.FirstOrDefault(p => p.Id == postId);
+                    db.Posts.Remove(userPostToDelete);
+                    return Results.Ok();
+                }
+                catch
+                {
+                    return Results.NotFound();
+                }
+            });
 
 
         }
