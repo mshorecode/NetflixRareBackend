@@ -1,3 +1,5 @@
+using NetflixRareBackend.APIs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,5 +17,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+CategoryAPIs.Map(app);
+CommentAPIs.Map(app);
+PostAPIs.Map(app);
+ReactionAPIs.Map(app);
+SubscriptionAPIs.Map(app);
+TagAPIs.Map(app);
+UserAPIs.Map(app);
 
 app.Run();
