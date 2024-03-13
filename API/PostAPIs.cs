@@ -1,4 +1,6 @@
-﻿namespace NetflixRareBackend.APIs
+﻿using NetflixRareBackend.Models;
+
+namespace NetflixRareBackend.APIs
 {
     public class PostAPIs
     {
@@ -47,6 +49,20 @@
                     return Results.Ok();
                 }
                 catch
+                {
+                    return Results.NotFound();
+                }
+            });
+
+
+            app.MapGet("/api/posts/{userId}", (RareDbContext db, int userId, Post userPost) => 
+            {
+                if (userId != null)
+                {
+                    db.Posts.Add(userPost);
+                    return Results.Ok();
+                }
+                else
                 {
                     return Results.NotFound();
                 }
