@@ -112,7 +112,50 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
+            app.MapPatch("/api/posts/{postId}", (RareDbContext db, int postId, Post editedPost) => 
+            {
+                var postToEdit = db.Posts.FirstOrDefault(p => p.Id == postId);
 
+                if (postToEdit == null)
+                {
+                    return Results.NotFound();
+                }
+
+                if (editedPost.Category_Id != null)
+                { 
+                    postToEdit.Category_Id = editedPost.Category_Id;
+                }
+
+                if (editedPost.Title != null)
+                { 
+                    postToEdit.Title = editedPost.Title;
+                }
+
+                if (editedPost.Publication_Date != null)
+                { 
+                    postToEdit.Publication_Date = editedPost.Publication_Date;
+                }
+
+                if (editedPost.Image_Url != null)
+                { 
+                    postToEdit.Image_Url = editedPost.Image_Url;
+                }
+
+                if (editedPost.Content != null)
+                { 
+                    postToEdit.Content = editedPost.Content;
+                }
+
+                if (editedPost.Approved != null)
+                { 
+                    postToEdit.Approved = editedPost.Approved;
+                }
+
+                db.SaveChanges();
+
+                return Results.Ok();
+               
+            });
         }
     }
 }
