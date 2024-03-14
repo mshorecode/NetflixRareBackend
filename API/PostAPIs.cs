@@ -100,7 +100,7 @@ namespace NetflixRareBackend.APIs
 
             app.MapPost("/api/posts/{userId}", (RareDbContext db, int userId, Post userPost) => 
             {
-                if (userId != null)
+                if (userId != 0)
                 {
                     db.Posts.Add(userPost);
                     db.SaveChanges();
