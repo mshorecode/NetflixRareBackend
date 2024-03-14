@@ -1,4 +1,5 @@
-﻿using NetflixRareBackend.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using NetflixRareBackend.Models;
 
 namespace NetflixRareBackend.APIs
 {
@@ -39,6 +40,20 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
+            app.MapGet("/api/posts/{tagId}", (RareDbContext db, int tagId) => 
+            {
+                try
+                {
+                    var postsWithTag = db.Posts.Include(p => p.Tags);
+                    var postsWithRequestedTag = postsWithTag.Where(p => p.Tags.Where(t => t.Id == tagId).Count() != 0);
+                    return Results.Ok(postsWithRequestedTag);
+                }
+                catch
+                {
+                    return Results.NotFound();
+                }
+            });
+
 
             app.MapGet("/api/posts/{postId}", (RareDbContext db, int postId) =>
             {
@@ -46,6 +61,7 @@ namespace NetflixRareBackend.APIs
                 {
                     var userPostToDelete = db.Posts.FirstOrDefault(p => p.Id == postId);
                     db.Posts.Remove(userPostToDelete);
+                    db.SaveChanges();
                     return Results.Ok();
                 }
                 catch
@@ -55,11 +71,12 @@ namespace NetflixRareBackend.APIs
             });
 
 
-            app.MapGet("/api/posts/{userId}", (RareDbContext db, int userId, Post userPost) => 
+            app.MapPost("/api/posts/{userId}", (RareDbContext db, int userId, Post userPost) => 
             {
                 if (userId != null)
                 {
                     db.Posts.Add(userPost);
+                    db.SaveChanges();
                     return Results.Ok();
                 }
                 else
