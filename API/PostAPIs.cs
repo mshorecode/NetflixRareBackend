@@ -67,6 +67,20 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
+            app.MapGet("/api/posts", (RareDbContext db, string Query) => 
+            { 
+                var searchedPost = db.Posts.FirstOrDefault(p => p.Title.ToLower().Contains(Query.ToLower()));
+
+                if (searchedPost != null)
+                {
+                    return Results.Ok(searchedPost);
+                }
+                else
+                {
+                    return Results.NotFound();
+                }
+            });
+
 
             app.MapGet("/api/posts/{postId}", (RareDbContext db, int postId) =>
             {
