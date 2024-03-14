@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetflixRareBackend.Dto;
+using NetflixRareBackend.Models;
 
 namespace NetflixRareBackend.APIs
 {
@@ -7,6 +8,20 @@ namespace NetflixRareBackend.APIs
     {
         public static void Map(WebApplication app)
         {
+
+            app.MapPost("/api/reactions", (RareDbContext db, Reaction createdReaction) => 
+            {
+                try
+                {
+                    db.Reactions.Add(createdReaction);
+                    db.SaveChanges();
+                    return Results.Ok();
+                }
+                catch
+                { 
+                    return Results.BadRequest();
+                }
+            });
 
             app.MapGet("/api/reactions", (RareDbContext db) => 
             { 
