@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using NetflixRareBackend;
+using NetflixRareBackend.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,5 +56,6 @@ ReactionAPIs.Map(app);
 SubscriptionAPIs.Map(app);
 TagAPIs.Map(app);
 UserAPIs.Map(app);
+PostTagApi.Map(app);
 
 app.Run();
