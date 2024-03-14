@@ -26,8 +26,8 @@ namespace NetflixRareBackend.APIs
                 }
 
                 if (tagUpdate.Label != null)
-                { 
-                    tagToEdit.Label == tagUpdate.Label.ToString()
+                {
+                    tagToEdit.Label = tagUpdate.Label.ToString();
                 }
 
                 return Results.Ok();

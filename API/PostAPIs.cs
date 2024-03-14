@@ -67,7 +67,7 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
-            app.MapGet("/api/posts", (RareDbContext db, string Query) => 
+            app.MapGet("/api/posts/search", (RareDbContext db, string Query) => 
             { 
                 var searchedPost = db.Posts.FirstOrDefault(p => p.Title.ToLower().Contains(Query.ToLower()));
 
@@ -82,7 +82,7 @@ namespace NetflixRareBackend.APIs
             });
 
 
-            app.MapGet("/api/posts/{postId}", (RareDbContext db, int postId) =>
+            app.MapDelete("/api/posts/{postId}", (RareDbContext db, int postId) =>
             {
                 try
                 {
