@@ -17,6 +17,22 @@ namespace NetflixRareBackend.APIs
                 return db.Tags.ToList();
             });
 
+            app.MapPatch("/api/tags/{tagId}", (RareDbContext db, int tagId, Tag tagUpdate) => 
+            {
+                var tagToEdit = db.Tags.FirstOrDefault(t => t.Id == tagId);
+                if (tagToEdit == null)
+                { 
+                    return Results.NotFound();
+                }
+
+                if (tagUpdate.Label != null)
+                { 
+                    tagToEdit.Label == tagUpdate.Label.ToString()
+                }
+
+                return Results.Ok();
+            });
+
             app.MapDelete("/api/tags/{tagId}", (RareDbContext db, int tagId) =>
             {
                 try
