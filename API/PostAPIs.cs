@@ -40,6 +40,19 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
+            app.MapGet("/api/posts/{categoryId}", (RareDbContext db, int categoryId) =>
+            {
+                try
+                {
+                    var postsWithCategory = db.Posts.FirstOrDefault(p => p.Category_Id == categoryId);
+                    return Results.Ok(postsWithCategory);
+                }
+                catch
+                {
+                    return Results.NotFound();
+                }
+            });
+
             app.MapGet("/api/posts/{tagId}", (RareDbContext db, int tagId) => 
             {
                 try
