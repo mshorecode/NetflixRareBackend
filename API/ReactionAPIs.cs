@@ -51,6 +51,30 @@ namespace NetflixRareBackend.APIs
 
                 return Results.Ok();
             });
+
+            app.MapDelete ("/api/post/removeReaction", (RareDbContext db, PostReactionDto reactionToDelete) =>
+            {
+                var postToReact = db.Posts.Include(p => p.Reactions).FirstOrDefault(p => p.Id == reactionToDelete.Post_Id);
+
+                if (postToReact == null)
+                {
+                    return Results.NotFound();
+                }
+
+                var deleteReaction = db.Reactions.Find(reactionToDelete.Reactions_Id);
+
+
+                if (deleteReaction == null)
+                {
+                    return Results.NotFound();
+                }
+
+                postToReact.Reactions.Remove(deleteReaction);
+
+                db.SaveChanges();
+
+                return Results.Ok();
+            });
         }
     }
 }
