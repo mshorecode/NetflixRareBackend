@@ -52,7 +52,7 @@ namespace NetflixRareBackend.APIs
                 return Results.Ok();
             });
 
-            app.MapDelete ("/api/post/removeReaction", (RareDbContext db, PostReactionDto reactionToDelete) =>
+            app.MapPost ("/api/post/removeReaction", (RareDbContext db, PostReactionDto reactionToDelete) =>
             {
                 var postToReact = db.Posts.Include(p => p.Reactions).FirstOrDefault(p => p.Id == reactionToDelete.Post_Id);
 
