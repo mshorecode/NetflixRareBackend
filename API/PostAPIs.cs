@@ -7,10 +7,12 @@ namespace NetflixRareBackend.APIs
     {
         public static void Map(WebApplication app)
         {
+            // Getting all posts
             app.MapGet("/api/posts", (RareDbContext db) => { 
                 return db.Posts.ToList();
             });
 
+            // Filtering posts by user ID 
             app.MapGet("/api/posts/{userId}", (RareDbContext db, int userId) =>
             {
                 try
@@ -24,6 +26,7 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
+            // Finding all posts of the subscriptions of a provided user
             app.MapGet("/api/posts/{userId}/subscribed", (RareDbContext db, int userId) => {
 
                 try
@@ -40,7 +43,8 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
-            app.MapGet("/api/posts/{categoryId}", (RareDbContext db, int categoryId) =>
+            // Filtering posts by category
+            app.MapGet("/api/posts/category/{categoryId}", (RareDbContext db, int categoryId) =>
             {
                 try
                 {
@@ -53,7 +57,8 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
-            app.MapGet("/api/posts/{tagId}", (RareDbContext db, int tagId) => 
+            // Filtering posts by tags 
+            app.MapGet("/api/posts/tags/{tagId}", (RareDbContext db, int tagId) => 
             {
                 try
                 {
@@ -67,6 +72,7 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
+            // Searching posts by title
             app.MapGet("/api/posts/search", (RareDbContext db, string Query) => 
             { 
                 var searchedPost = db.Posts.FirstOrDefault(p => p.Title.ToLower().Contains(Query.ToLower()));
@@ -81,7 +87,7 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
-
+            // Deleting a post
             app.MapDelete("/api/posts/{postId}", (RareDbContext db, int postId) =>
             {
                 try
@@ -97,7 +103,7 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
-
+            // Editing a post
             app.MapPost("/api/posts/{userId}", (RareDbContext db, int userId, Post userPost) => 
             {
                 if (userId != 0)
