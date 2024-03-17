@@ -12,8 +12,23 @@ namespace NetflixRareBackend.APIs
                 return db.Posts.ToList();
             });
 
-            // Filtering posts by user ID 
-            app.MapGet("/api/posts/{userId}", (RareDbContext db, int userId) =>
+            //Get post details
+            app.MapGet("/api/posts/{postId}", (RareDbContext db, int postId) =>
+            {
+                Post post = db.Posts
+                .Include(p => p.Tags)
+                .Include(p => p.Reactions)
+                .SingleOrDefault(p => p.Id == postId);
+                if (post != null)
+                {
+                    return post;
+                }
+                return null;
+            });
+
+
+           // Filtering posts by user ID 
+            app.MapGet("/api/posts/user/{userId}", (RareDbContext db, int userId) =>
             {
                 try
                 {
@@ -103,21 +118,15 @@ namespace NetflixRareBackend.APIs
                 }
             });
 
-            // Editing a post
-            app.MapPost("/api/posts/{userId}", (RareDbContext db, int userId, Post userPost) => 
+            //create post
+            app.MapPost("/api/posts/new", (RareDbContext db, Post userPost) => 
             {
-                if (userId != 0)
-                {
                     db.Posts.Add(userPost);
                     db.SaveChanges();
-                    return Results.Ok();
-                }
-                else
-                {
-                    return Results.NotFound();
-                }
+                    return Results.Created($"/api/posts/{userPost.Id}", userPost);
             });
 
+            // Editing a post
             app.MapPatch("/api/posts/{postId}", (RareDbContext db, int postId, Post editedPost) => 
             {
                 var postToEdit = db.Posts.FirstOrDefault(p => p.Id == postId);
