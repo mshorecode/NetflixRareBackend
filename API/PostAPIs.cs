@@ -110,7 +110,7 @@ namespace NetflixRareBackend.APIs
                     var userPostToDelete = db.Posts.FirstOrDefault(p => p.Id == postId);
                     db.Posts.Remove(userPostToDelete);
                     db.SaveChanges();
-                    return Results.Ok();
+                    return Results.Ok("post deleted");
                 }
                 catch
                 {
@@ -168,7 +168,7 @@ namespace NetflixRareBackend.APIs
 
                 db.SaveChanges();
 
-                return Results.Ok();
+                return Results.Ok(postToEdit);
                
             });
         }
