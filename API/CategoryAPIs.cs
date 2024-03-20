@@ -11,7 +11,7 @@ namespace NetflixRareBackend.APIs
                 return db.Categories;
             });
 
-            //get category Id
+            //get category by Id
             app.MapGet("/api/categories/{id}", (RareDbContext db, int id) =>
             {
                 Category category = db.Categories.SingleOrDefault(c => c.Id == id);

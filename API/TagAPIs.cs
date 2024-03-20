@@ -17,6 +17,16 @@ namespace NetflixRareBackend.APIs
                 return db.Tags.ToList();
             });
 
+            app.MapGet("/api/tags/{id}", (RareDbContext db, int id) =>
+            {
+                Tag tag = db.Tags.SingleOrDefault(t => t.Id == id);
+                if (tag != null)
+                {
+                    return Results.Ok(tag);
+                }
+                return Results.BadRequest("Tag not found");
+            });
+
             app.MapPatch("/api/tags/{tagId}", (RareDbContext db, int tagId, Tag tagUpdate) => 
             {
                 var tagToEdit = db.Tags.FirstOrDefault(t => t.Id == tagId);

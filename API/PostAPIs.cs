@@ -121,9 +121,18 @@ namespace NetflixRareBackend.APIs
             //create post
             app.MapPost("/api/posts/new", (RareDbContext db, Post userPost) => 
             {
-                    db.Posts.Add(userPost);
+                    Post newPost = new Post();
+                    newPost.Title = userPost.Title;
+                    newPost.Content = userPost.Content;
+                    newPost.Approved = userPost.Approved;
+                    newPost.User_Id = userPost.Id;
+                    newPost.Category_Id = userPost.Category_Id;
+                    newPost.Tags = userPost.Tags;
+                    newPost.Publication_Date = userPost.Publication_Date;
+                    newPost.Image_Url = userPost.Image_Url;
+                    db.Posts.Add(newPost);
                     db.SaveChanges();
-                    return Results.Created($"/api/posts/{userPost.Id}", userPost);
+                    return Results.Created($"/api/posts/{newPost.Id}", newPost);
             });
 
             // Editing a post
