@@ -119,20 +119,26 @@ namespace NetflixRareBackend.APIs
             });
 
             //create post
-            app.MapPost("/api/posts/new", (RareDbContext db, Post userPost) => 
+            app.MapPost("/api/posts/new", (RareDbContext db, Post userPost) =>
             {
-                    Post newPost = new Post();
-                    newPost.Title = userPost.Title;
-                    newPost.Content = userPost.Content;
-                    newPost.Approved = userPost.Approved;
-                    newPost.User_Id = userPost.Id;
-                    newPost.Category_Id = userPost.Category_Id;
-                    newPost.Tags = userPost.Tags;
-                    newPost.Publication_Date = userPost.Publication_Date;
-                    newPost.Image_Url = userPost.Image_Url;
-                    db.Posts.Add(newPost);
-                    db.SaveChanges();
-                    return Results.Created($"/api/posts/{newPost.Id}", newPost);
+                Post newPost = new Post();
+                newPost.Title = userPost.Title;
+                newPost.Content = userPost.Content;
+                newPost.Approved = userPost.Approved;
+                newPost.User_Id = userPost.User_Id;
+                newPost.Category_Id = userPost.Category_Id;
+                newPost.Publication_Date = userPost.Publication_Date;
+                newPost.Image_Url = userPost.Image_Url;
+
+                newPost.Tags = new List<Tag>();
+                foreach (var tag in userPost.Tags)
+                {
+                    Tag selectedTag = db.Tags.SingleOrDefault(t => t.Id == tag.Id);
+                    newPost.Tags.Add(selectedTag);
+                }
+                db.Posts.Add(newPost);
+                db.SaveChanges();
+                return Results.Created($"/api/posts/{newPost.Id}", newPost);
             });
 
             // Editing a post
@@ -173,6 +179,17 @@ namespace NetflixRareBackend.APIs
                 if (editedPost.Approved != null)
                 { 
                     postToEdit.Approved = editedPost.Approved;
+                }
+
+                if (editedPost.Tags != null)
+                {
+                    postToEdit.Tags = new List<Tag>();
+
+                    foreach (var tag in editedPost.Tags)
+                    {
+                        var newTag = db.Tags.SingleOrDefault(t => t.Id == tag.Id);
+                        postToEdit.Tags.Add(newTag);
+                    }
                 }
 
                 db.SaveChanges();
