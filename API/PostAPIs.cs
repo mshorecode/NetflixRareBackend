@@ -9,7 +9,10 @@ namespace NetflixRareBackend.APIs
         {
             // Getting all posts
             app.MapGet("/api/posts", (RareDbContext db) => { 
-                return db.Posts.ToList();
+                return db.Posts
+                .Include(p => p.Tags)
+                .Include(p => p.Reactions)
+                .ToList();
             });
 
             //Get post details
