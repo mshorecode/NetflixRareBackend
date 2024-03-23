@@ -38,7 +38,7 @@ namespace NetflixRareBackend.APIs
                 {
                     db.Categories.Remove(categoryToDelete);
                     db.SaveChanges();
-                    return Results.NoContent();
+                    return Results.Ok(db.Categories);
                 }
                 return Results.BadRequest("Category not found");
             });

@@ -10,7 +10,7 @@ namespace NetflixRareBackend.APIs
             { 
                 db.Tags.Add(tagToAdd);
                 db.SaveChanges();
-                return Results.Ok();
+                return Results.Ok(db.Tags.ToList());
             });
             
             app.MapGet("/api/tags", (RareDbContext db) => {
@@ -50,7 +50,7 @@ namespace NetflixRareBackend.APIs
                     var userTagToDelete = db.Tags.FirstOrDefault(t => t.Id == tagId);
                     db.Tags.Remove(userTagToDelete);
                     db.SaveChanges();
-                    return Results.Ok();
+                    return Results.Ok(db.Tags);
                 }
                 catch
                 {
