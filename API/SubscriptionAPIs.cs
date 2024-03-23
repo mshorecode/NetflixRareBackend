@@ -6,6 +6,19 @@ namespace NetflixRareBackend.APIs
     {
         public static void Map(WebApplication app)
         {
+            app.MapGet("/api/subscriptions/{followerId}/{authorId}", (RareDbContext db, int authorId, int followerId) =>
+            {
+                Subscription subscriptionById = db.Subscriptions.FirstOrDefault(s => s.Author_Id == authorId && s.Follower_Id == followerId);
+
+                if (subscriptionById != null)
+                {
+                    return Results.Ok(subscriptionById.Id);
+                }
+
+                return Results.NoContent();
+
+            });
+
             app.MapPost("/api/subscriptions", (RareDbContext db, Subscription subscription) =>
             {
                 db.Subscriptions.Add(subscription);
