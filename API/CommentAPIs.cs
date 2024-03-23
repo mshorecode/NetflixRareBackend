@@ -21,7 +21,7 @@ namespace NetflixRareBackend.APIs
                                                 .ToList();
                 if (comments.Count == 0)
                 {
-                    return null;
+                    return Results.NotFound("no comments found");
                 }
                 return Results.Ok(comments);
             });
